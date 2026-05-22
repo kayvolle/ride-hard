@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RIDE HARD – Motorrad Gear & Accessoires</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;600;700&family=Barlow:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #0a0a0a;
+    --dark: #111111;
+    --card: #161616;
+    --border: #252525;
+    --orange: #FF4D00;
+    --orange-glow: rgba(255,77,0,0.18);
+    --orange-dim: #cc3d00;
+    --white: #f0ece4;
+    --grey: #888880;
+    --light: #c8c4bc;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'Barlow', sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 2rem;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 100%, rgba(255,77,0,0.12) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 40% at 80% 20%, rgba(255,77,0,0.06) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  .hero-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255,77,0,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,77,0,0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mask-image: radial-gradient(ellipse at center, black 30%, transparent 80%);
+  }
+
+  .hero-tag {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--orange);
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fadeUp 0.6s ease 0.2s forwards;
+  }
+
+  .hero h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(5rem, 15vw, 14rem);
+    line-height: 0.88;
+    letter-spacing: 0.03em;
+    color: var(--white);
+    text-shadow: 0 0 80px rgba(255,77,0,0.25);
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.4s forwards;
+  }
+
+  .hero h1 span {
+    -webkit-text-stroke: 2px var(--orange);
+    color: transparent;
+  }
+
+  .hero-sub {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: clamp(1rem, 2.5vw, 1.4rem);
+    font-weight: 400;
+    letter-spacing: 0.15em;
+    color: var(--grey);
+    margin-top: 1.5rem;
+    max-width: 500px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.6s forwards;
+  }
+
+  .hero-scroll {
+    position: absolute;
+    bottom: 2.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    opacity: 0;
+    animation: fadeIn 1s ease 1.4s forwards;
+  }
+
+  .scroll-line {
+    width: 1px;
+    height: 50px;
+    background: linear-gradient(to bottom, transparent, var(--orange));
+    animation: scrollPulse 2s ease-in-out infinite;
+  }
+
+  .scroll-text {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.3em;
+    color: var(--grey);
+    text-transform: uppercase;
+  }
+
+  /* ── DISCLAIMER BAR ── */
+  .disclaimer-bar {
+    background: #1a1200;
+    border-top: 1px solid #2a1f00;
+    border-bottom: 1px solid #2a1f00;
+    padding: 0.6rem 2rem;
+    text-align: center;
+    font-size: 0.78rem;
+    color: #aa8844;
+    letter-spacing: 0.05em;
+  }
+
+  /* ── SECTION HEADER ── */
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    padding: 5rem 2rem 2.5rem;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .section-header h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    letter-spacing: 0.05em;
+    color: var(--white);
+  }
+
+  .section-header .count {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 0.9rem;
+    color: var(--orange);
+    letter-spacing: 0.2em;
+    padding: 0.2rem 0.7rem;
+    border: 1px solid var(--orange);
+    opacity: 0.7;
+  }
+
+  .divider-line {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, var(--border), transparent);
+  }
+
+  /* ── PRODUCTS GRID ── */
+  .products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5px;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 0 6rem;
+    border-top: 1.5px solid var(--border);
+    border-left: 1.5px solid var(--border);
+  }
+
+  /* ── CARD ── */
+  .card {
+    background: var(--card);
+    border-right: 1.5px solid var(--border);
+    border-bottom: 1.5px solid var(--border);
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+
+  .card:hover {
+    background: #1c1c1c;
+  }
+
+  .card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, var(--orange-glow) 0%, transparent 60%);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    pointer-events: none;
+  }
+
+  .card:hover::after { opacity: 1; }
+
+  /* image */
+  .card-img {
+    position: relative;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    background: #0d0d0d;
+  }
+
+  .card-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.3s ease;
+    display: block;
+  }
+
+  .card:hover .card-img img { transform: scale(1.07); }
+
+  .img-thumb-row {
+    display: flex;
+    gap: 4px;
+    padding: 4px;
+    background: var(--black);
+  }
+
+  .img-thumb {
+    flex: 1;
+    aspect-ratio: 1;
+    overflow: hidden;
+    cursor: pointer;
+    opacity: 0.5;
+    transition: opacity 0.2s;
+    border: 1px solid transparent;
+  }
+
+  .img-thumb.active, .img-thumb:hover {
+    opacity: 1;
+    border-color: var(--orange);
+  }
+
+  .img-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* body */
+  .card-body {
+    padding: 1.25rem 1.5rem 1rem;
+  }
+
+  .card-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    line-height: 1.3;
+    color: var(--white);
+    margin-bottom: 0.6rem;
+    /* strip emoji from display via JS */
+  }
+
+  .card-desc {
+    font-size: 0.82rem;
+    color: var(--grey);
+    line-height: 1.55;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease, opacity 0.3s ease;
+    opacity: 0;
+  }
+
+  .card:hover .card-desc {
+    max-height: 200px;
+    opacity: 1;
+  }
+
+  /* footer */
+  .card-foot {
+    padding: 0 1.5rem 1.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .hashtags {
+    font-size: 0.72rem;
+    color: #444;
+    font-family: 'Barlow Condensed', sans-serif;
+    letter-spacing: 0.05em;
+  }
+
+  .btn-buy {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.55rem 1.2rem;
+    background: var(--orange);
+    color: var(--black);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 0.82rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.2s ease, transform 0.15s ease;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .btn-buy:hover {
+    background: #ff6020;
+    transform: translateY(-1px);
+  }
+
+  .btn-buy::before {
+    content: '';
+    position: absolute;
+    top: 0; left: -100%;
+    width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+    transition: left 0.4s ease;
+  }
+
+  .btn-buy:hover::before { left: 100%; }
+
+  .arrow-icon {
+    font-size: 1rem;
+    transition: transform 0.2s ease;
+  }
+
+  .btn-buy:hover .arrow-icon { transform: translateX(3px); }
+
+  /* ── FEATURED (first 2 cards wide) ── */
+  .card.featured {
+    grid-column: span 2;
+  }
+
+  .card.featured .card-img {
+    aspect-ratio: 2 / 1;
+  }
+
+  @media (max-width: 700px) {
+    .card.featured { grid-column: span 1; }
+    .card.featured .card-img { aspect-ratio: 1; }
+  }
+
+  /* ── FOOTER ── */
+  .site-footer {
+    border-top: 1px solid var(--border);
+    padding: 3rem 2rem;
+    text-align: center;
+  }
+
+  .footer-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.5rem;
+    letter-spacing: 0.1em;
+    color: var(--white);
+    margin-bottom: 0.5rem;
+  }
+
+  .footer-logo span { color: var(--orange); }
+
+  .footer-legal {
+    font-size: 0.78rem;
+    color: #444;
+    max-width: 600px;
+    margin: 0 auto 1rem;
+    line-height: 1.7;
+  }
+
+  .footer-copy {
+    font-size: 0.72rem;
+    color: #333;
+    letter-spacing: 0.1em;
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  @keyframes scrollPulse {
+    0%, 100% { transform: scaleY(1); opacity: 0.5; }
+    50% { transform: scaleY(1.3); opacity: 1; }
+  }
+
+  /* card entrance */
+  .card {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.5s ease, transform 0.5s ease, background 0.3s ease;
+  }
+
+  .card.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-tag">🏍️ Affiliate Gear Selection</div>
+  <h1>RIDE<br><span>HARD</span></h1>
+  <p class="hero-sub">Die besten Motorrad-Klamotten & Accessoires – handverlesen, direkt bei Amazon</p>
+  <div class="hero-scroll">
+    <span class="scroll-text">Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- DISCLAIMER -->
+<div class="disclaimer-bar">
+  ⚠️ Affiliate-Hinweis: Diese Seite enthält Affiliate-Links (#ad #werbung). Als Amazon-Partner verdiene ich an qualifizierten Käufen. Für dich entstehen keine Mehrkosten.
+</div>
+
+<!-- PRODUCTS -->
+<div class="section-header">
+  <h2>Top Picks</h2>
+  <span class="count">16 Produkte</span>
+  <div class="divider-line"></div>
+</div>
+
+<div class="products-grid" id="grid"></div>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <div class="footer-logo">RIDE <span>HARD</span></div>
+  <p class="footer-legal">
+    Diese Website enthält Affiliate-Links zu Amazon. Als Amazon-Partner verdiene ich an qualifizierten Käufen eine Provision. Für dich entstehen dabei keine zusätzlichen Kosten. Alle Preise und Verfügbarkeiten können sich ändern.
+  </p>
+  <p class="footer-copy">© 2025 RIDE HARD · Alle Rechte vorbehalten</p>
+</footer>
+
+<script>
+const products = [
+  {
+    name: "oFzimTo Motorrad-Jeans: Maximaler Stretch & Schutz",
+    link: "https://amzn.to/4uMpLFL",
+    imgs: ["https://m.media-amazon.com/images/I/71-FqVuRxgL._AC_SX679_.jpg","https://m.media-amazon.com/images/I/61Pp0Rdp4TL._AC_SX466_.jpg","https://m.media-amazon.com/images/I/71m9Q3JLiDL._AC_SX466_.jpg"],
+    desc: "Maximale Freiheit auf dem Bike dank hochwertigem Stretch-Denim. Perfekter Sitz in jeder Kurve, speziell für Motorradfahrer entwickelt.",
+    featured: true
+  },
+  {
+    name: "Vintage Motorrad-Flaschenöffner – Das ideale Geschenk",
+    link: "https://amzn.to/4dabP2y",
+    imgs: ["https://m.media-amazon.com/images/I/71AQt48HUYL._AC_SL1500_.jpg","https://m.media-amazon.com/images/I/81nH29kd1xL._AC_SL1500_.jpg","https://m.media-amazon.com/images/I/71ydPRzpymL._AC_SL1500_.jpg"],
+    desc: "Detailreicher Vintage-Look aus robustem Material. Ideales Geschenk für Biker zu Geburtstag, Vatertag oder als cooles Gadget für die Werkstatt.",
+    featured: true
+  },
+  {
+    name: "Wolkenbruch Totenkopf T-Shirt – Rockiger Biker-Style",
+    link: "https://www.amazon.de/dp/B078WRB2PC",
+    imgs: ["https://m.media-amazon.com/images/I/71RXYxRifRL._AC_SX425_.jpg","https://m.media-amazon.com/images/I/71RXYxRifRL._AC_SX425_.jpg","https://m.media-amazon.com/images/I/71RXYxRifRL._AC_SX425_.jpg"],
+    desc: "Cooler Skull-13-Print in tiefem Schwarz. Lässiger Biker- und Rocker-Vibe für Konzerte, Freizeit oder den Alltag."
+  },
+  {
+    name: "BORLENI Motorradjacke: Winddicht & Sicher",
+    link: "https://www.amazon.de/dp/B0817H7SM4",
+    imgs: ["https://m.media-amazon.com/images/I/81jwJsWWDLL._AC_SL1500_.jpg","https://m.media-amazon.com/images/I/71SlK5xkSdL._AC_SL1500_.jpg","https://m.media-amazon.com/images/I/71q8yltGY9L._AC_SL1500_.jpg"],
+    desc: "Perfekter Mix aus Schutz und Komfort. Absolut winddicht, mit robusten Protektoren ausgestattet. Unisex-Passform."
+  },
+  {
+    name: "Retro Motorrad-Halbhelm mit ECE-Schutz",
+    link: "https://www.amazon.de/dp/B0BVZPH2D5",
+    imgs: ["https://m.media-amazon.com/images/I/51rOCp3SIaL._AC_SL1001_.jpg","https://m.media-amazon.com/images/I/61dH57MxXBL._AC_SL1001_.jpg","https://m.media-amazon.com/images/I/61gZQrpnQjL._AC_SL1001_.jpg"],
+    desc: "Stilvoller Jethelm mit offizieller ECE-Zertifizierung. Herausnehmbares, waschbares Innenfutter. Größen M bis XXL."
+  },
+  {
+    name: "Lemasi Biker-Geldbörse aus Hunterleder",
+    link: "https://www.amazon.de/dp/B0CKJ5QDFC",
+    imgs: ["https://m.media-amazon.com/images/I/81nvars7ORL._AC_SL1500_.jpg","https://m.media-amazon.com/images/I/81brc0a112L._AC_SL1500_.jpg","https://m.media-amazon.com/images/I/813We+jbEZL._AC_SL1500_.jpg"],
+    desc: "Echtes Hunterleder, RFID-Schutz und coole Fahrradkette zur sicheren Befestigung. Stil, Schutz und Funktionalität in einem."
+  },
+  {
+    name: "Maverton Kanister Mini Bar – Männergeschenk",
+    link: "https://www.amazon.de/dp/B0CV492G91",
+    imgs: ["https://m.media-amazon.com/images/I/71uP58Bbn9L._AC_SL1401_.jpg","https://m.media-amazon.com/images/I/717NbaH85iL._AC_SL1400_.jpg","https://m.media-amazon.com/images/I/71XTrRDqmTL._AC_SL1400_.jpg"],
+    desc: "Mini Bar im 20L-Metallkanister-Look mit personalisierter Gravur und abschließbarer Tür. Das perfekte Geschenk für echte Kerle."
+  },
+  {
+    name: "West Coast Choppers Hoody – Kult-Biker-Style",
+    link: "https://www.amazon.de/dp/B011E4LKPE",
+    imgs: ["https://m.media-amazon.com/images/I/711hzWKzIEL._AC_SX522_.jpg","https://m.media-amazon.com/images/I/71+L6oi44eL._AC_SX522_.jpg","https://m.media-amazon.com/images/I/71EfNqzivOL._AC_SX679_.jpg"],
+    desc: "Offizielles West Coast Choppers Cross-Panel-Design. Hochwertiges Material, praktische Kapuze & Kängurutasche."
+  },
+  {
+    name: "Muc-Off Motorrad Pflegeset – Rundum-Schutz & Glanz",
+    link: "https://www.amazon.de/dp/B00CYIOR4G",
+    imgs: ["https://m.media-amazon.com/images/I/81tRpIISbOL._AC_SL1500_.jpg","https://m.media-amazon.com/images/I/81M3TmQg2tL._AC_SL1500_.jpg","https://m.media-amazon.com/images/I/71hBVCBXFEL._AC_SL1500_.jpg"],
+    desc: "Hocheffektiver Reiniger + Schutzspray + Bürsten. Löst hartnäckigen Schmutz und schützt vor Korrosion."
+  },
+  {
+    name: "Mycl Turell Echtleder-Motorradhandschuhe",
+    link: "https://www.amazon.de/dp/B0BVRC1DC6",
+    imgs: ["https://m.media-amazon.com/images/I/71tslXG+PdL._AC_SL1500_.jpg","https://m.media-amazon.com/images/I/81PpAFYvksL._AC_SL1500_.jpg","https://m.media-amazon.com/images/I/81Tj80UUP0L._AC_SL1500_.jpg"],
+    desc: "Robustes Echtleder mit integrierten Gel-Polstern für maximale Vibrationsdämpfung. Zeitloser Cross-Stitch-Look."
+  },
+  {
+    name: "Robuste Tactical Boots mit YKK-Zipper",
+    link: "https://www.amazon.de/dp/B00FJ08LGG",
+    imgs: ["https://m.media-amazon.com/images/I/81iLwe+VDSL._AC_SY625_.jpg","https://m.media-amazon.com/images/I/810Bp33OUoL._AC_SX575_.jpg","https://m.media-amazon.com/images/I/81eFlAj+wNL._AC_SY675_.jpg"],
+    desc: "Hochwertiger YKK-Reißverschluss, robuste Profilsohle. Extremer Tragekomfort für Dienst, Outdoor oder Alltag."
+  },
+  {
+    name: "JTDEAL Skull Masken [3er-Pack] – Schutz mit Style",
+    link: "https://www.amazon.de/dp/B0749NPZ8M",
+    imgs: ["https://m.media-amazon.com/images/I/718BnoEp2vL._AC_SX679_.jpg","https://m.media-amazon.com/images/I/71taeVtLtZL._AC_SX679_.jpg","https://m.media-amazon.com/images/I/71tca7YnDhL._AC_SX679_.jpg"],
+    desc: "3 atmungsaktive Totenkopf-Masken für Motorrad, Ski oder Halloween. Passt unter jeden Helm."
+  },
+  {
+    name: "Harley-Davidson Military Hoodie – Epic Collage",
+    link: "https://www.amazon.de/dp/B08C5F87L4",
+    imgs: ["https://m.media-amazon.com/images/I/61wfb-q5fNL._AC_SX569_.jpg","https://m.media-amazon.com/images/I/61l3lytD1nL._AC_SX569_.jpg","https://m.media-amazon.com/images/I/61n42lBt6EL._AC_SX522_.jpg"],
+    desc: "Offizieller Harley-Davidson Military-Collage-Print. Premium-Qualität mit Kapuze. Ein Must-have für echte Fans."
+  },
+  {
+    name: "Baseball Cap Motorradhelm mit ECE",
+    link: "https://www.amazon.de/dp/B0D471K2MW",
+    imgs: ["https://m.media-amazon.com/images/I/61DDm2jVImL._AC_SL1010_.jpg","https://m.media-amazon.com/images/I/61JEMj-FRVL._AC_SL1010_.jpg","https://m.media-amazon.com/images/I/71eJicCdDRL._AC_SL1010_.jpg"],
+    desc: "Einzigartiger Halbhelm im Baseballmützen-Look mit ECE-Zulassung. Integriertes Sonnenvisier, Größen 55–64 cm."
+  },
+  {
+    name: "ISEYOU Motorrad Beintasche – Freiheit für deine Hände",
+    link: "https://www.amazon.de/dp/B0CBLP8V2T",
+    imgs: ["https://m.media-amazon.com/images/I/71lCv07OgcL._AC_SL1500_.jpg","https://m.media-amazon.com/images/I/81jCAbMEMlL._AC_SL1500_.jpg","https://m.media-amazon.com/images/I/81ptjLV3BIL._AC_SL1500_.jpg"],
+    desc: "Clevere Oberschenkeltasche für Smartphone, Schlüssel & Co. Abnehmbare Beingurte, Unisex-Design."
+  },
+  {
+    name: "Retro ECE-Jethelm mit integrierter Sonnenbrille",
+    link: "https://www.amazon.de/dp/B0F1DC9K5P",
+    imgs: ["https://m.media-amazon.com/images/I/61sythkc58L._AC_SL1001_.jpg","https://m.media-amazon.com/images/I/51oJorjhGTL._AC_SL1001_.jpg","https://m.media-amazon.com/images/I/61K0bZ72qqL._AC_SL1001_.jpg"],
+    desc: "Retro-Halbschalenhelm mit ECE-Zulassung und integrierter Sonnenbrille. Vintage-Vibe für Cruiser, Chopper und Scooter."
+  }
+];
+
+const grid = document.getElementById('grid');
+
+products.forEach((p, i) => {
+  const card = document.createElement('div');
+  card.className = 'card' + (p.featured ? ' featured' : '');
+
+  card.innerHTML = `
+    <div class="card-img">
+      <img src="${p.imgs[0]}" alt="${p.name}" loading="lazy">
+    </div>
+    <div class="img-thumb-row">
+      ${p.imgs.map((img, idx) => `
+        <div class="img-thumb ${idx===0?'active':''}" data-idx="${idx}">
+          <img src="${img}" alt="" loading="lazy">
+        </div>`).join('')}
+    </div>
+    <div class="card-body">
+      <div class="card-name">${p.name}</div>
+      <div class="card-desc">${p.desc}</div>
+    </div>
+    <div class="card-foot">
+      <span class="hashtags">#ad #affiliate</span>
+      <a class="btn-buy" href="${p.link}" target="_blank" rel="noopener sponsored">
+        Bei Amazon <span class="arrow-icon">→</span>
+      </a>
+    </div>
+  `;
+
+  // thumbnail switching
+  card.querySelectorAll('.img-thumb').forEach(thumb => {
+    thumb.addEventListener('click', () => {
+      const mainImg = card.querySelector('.card-img img');
+      const idx = parseInt(thumb.dataset.idx);
+      mainImg.style.opacity = '0';
+      setTimeout(() => {
+        mainImg.src = p.imgs[idx];
+        mainImg.style.opacity = '1';
+      }, 150);
+      card.querySelectorAll('.img-thumb').forEach(t => t.classList.remove('active'));
+      thumb.classList.add('active');
+    });
+  });
+
+  grid.appendChild(card);
+});
+
+// staggered entrance with IntersectionObserver
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry, i) => {
+    if (entry.isIntersecting) {
+      const delay = (Array.from(grid.children).indexOf(entry.target) % 4) * 80;
+      setTimeout(() => entry.target.classList.add('visible'), delay);
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+
+grid.querySelectorAll('.card').forEach(c => observer.observe(c));
+</script>
+</body>
+</html>
