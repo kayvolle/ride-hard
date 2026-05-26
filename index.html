@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RIDE HARD – Motorrad Gear & Accessoires</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;600;700&family=Barlow:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #0a0a0a;
+    --dark: #111111;
+    --card: #161616;
+    --border: #252525;
+    --orange: #FF4D00;
+    --orange-glow: rgba(255,77,0,0.18);
+    --white: #f0ece4;
+    --grey: #888880;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--black); color: var(--white); font-family: 'Barlow', sans-serif; overflow-x: hidden; }
+
+  /* HERO */
+  .hero {
+    position: relative; min-height: 100vh; display: flex; flex-direction: column;
+    justify-content: center; align-items: center; text-align: center; padding: 2rem; overflow: hidden;
+  }
+  .hero::before {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 50% 100%, rgba(255,77,0,0.12) 0%, transparent 70%),
+                radial-gradient(ellipse 40% 40% at 80% 20%, rgba(255,77,0,0.06) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .hero-grid {
+    position: absolute; inset: 0;
+    background-image: linear-gradient(rgba(255,77,0,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255,77,0,0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mask-image: radial-gradient(ellipse at center, black 30%, transparent 80%);
+  }
+  .hero-tag { font-family: 'Barlow Condensed', sans-serif; font-size: .85rem; font-weight: 600; letter-spacing: .35em; text-transform: uppercase; color: var(--orange); margin-bottom: 1.5rem; opacity: 0; animation: fadeUp .6s ease .2s forwards; }
+  .hero h1 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(5rem,15vw,14rem); line-height: .88; letter-spacing: .03em; text-shadow: 0 0 80px rgba(255,77,0,.25); opacity: 0; animation: fadeUp .8s ease .4s forwards; }
+  .hero h1 span { -webkit-text-stroke: 2px var(--orange); color: transparent; }
+  .hero-sub { font-family: 'Barlow Condensed', sans-serif; font-size: clamp(1rem,2.5vw,1.4rem); letter-spacing: .15em; color: var(--grey); margin-top: 1.5rem; max-width: 500px; opacity: 0; animation: fadeUp .8s ease .6s forwards; }
+  .hero-scroll { position: absolute; bottom: 2.5rem; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: .5rem; opacity: 0; animation: fadeIn 1s ease 1.4s forwards; }
+  .scroll-line { width: 1px; height: 50px; background: linear-gradient(to bottom, transparent, var(--orange)); animation: scrollPulse 2s ease-in-out infinite; }
+  .scroll-text { font-family: 'Barlow Condensed', sans-serif; font-size: .7rem; letter-spacing: .3em; color: var(--grey); text-transform: uppercase; }
+
+  /* DISCLAIMER */
+  .disclaimer-bar { background: #1a1200; border-top: 1px solid #2a1f00; border-bottom: 1px solid #2a1f00; padding: .6rem 2rem; text-align: center; font-size: .78rem; color: #aa8844; letter-spacing: .05em; }
+
+  /* SECTION HEADER */
+  .section-header { display: flex; align-items: baseline; gap: 1rem; padding: 5rem 2rem 2.5rem; max-width: 1400px; margin: 0 auto; }
+  .section-header h2 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(2.5rem,5vw,4rem); letter-spacing: .05em; }
+  .section-header .count { font-family: 'Barlow Condensed', sans-serif; font-size: .9rem; color: var(--orange); letter-spacing: .2em; padding: .2rem .7rem; border: 1px solid var(--orange); opacity: .7; }
+  .divider-line { flex: 1; height: 1px; background: linear-gradient(to right, var(--border), transparent); }
+
+  /* LOADING */
+  .loading { text-align: center; padding: 6rem 2rem; font-family: 'Barlow Condensed', sans-serif; letter-spacing: .2em; color: var(--grey); font-size: 1.1rem; }
+  .loading span { color: var(--orange); animation: blink 1s ease-in-out infinite; }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.2} }
+
+  /* GRID */
+  .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5px; max-width: 1400px; margin: 0 auto; padding: 0 0 6rem; border-top: 1.5px solid var(--border); border-left: 1.5px solid var(--border); }
+
+  /* CARD */
+  .card { background: var(--card); border-right: 1.5px solid var(--border); border-bottom: 1.5px solid var(--border); position: relative; overflow: hidden; opacity: 0; transform: translateY(24px); transition: opacity .5s ease, transform .5s ease, background .3s ease; }
+  .card.visible { opacity: 1; transform: translateY(0); }
+  .card:hover { background: #1c1c1c; }
+  .card::after { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, var(--orange-glow) 0%, transparent 60%); opacity: 0; transition: opacity .4s ease; pointer-events: none; }
+  .card:hover::after { opacity: 1; }
+  .card.featured { grid-column: span 2; }
+  .card-img { position: relative; aspect-ratio: 1/1; overflow: hidden; background: #0d0d0d; }
+  .card.featured .card-img { aspect-ratio: 2/1; }
+  .card-img img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s cubic-bezier(.25,.46,.45,.94), opacity .3s ease; display: block; }
+  .card:hover .card-img img { transform: scale(1.07); }
+  .img-thumb-row { display: flex; gap: 4px; padding: 4px; background: var(--black); }
+  .img-thumb { flex: 1; aspect-ratio: 1; overflow: hidden; cursor: pointer; opacity: .5; transition: opacity .2s; border: 1px solid transparent; }
+  .img-thumb.active, .img-thumb:hover { opacity: 1; border-color: var(--orange); }
+  .img-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .card-body { padding: 1.25rem 1.5rem 1rem; }
+  .card-name { font-family: 'Barlow Condensed', sans-serif; font-size: 1.05rem; font-weight: 700; letter-spacing: .04em; line-height: 1.3; color: var(--white); margin-bottom: .6rem; }
+  .card-desc { font-size: .82rem; color: var(--grey); line-height: 1.55; max-height: 0; overflow: hidden; transition: max-height .4s ease, opacity .3s ease; opacity: 0; }
+  .card:hover .card-desc { max-height: 200px; opacity: 1; }
+  .card-foot { padding: 0 1.5rem 1.25rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+  .hashtags { font-size: .72rem; color: #444; font-family: 'Barlow Condensed', sans-serif; letter-spacing: .05em; }
+  .btn-buy { display: inline-flex; align-items: center; gap: .5rem; padding: .55rem 1.2rem; background: var(--orange); color: var(--black); font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: .82rem; letter-spacing: .15em; text-transform: uppercase; text-decoration: none; transition: background .2s ease, transform .15s ease; white-space: nowrap; flex-shrink: 0; }
+  .btn-buy:hover { background: #ff6020; transform: translateY(-1px); }
+  .arrow-icon { font-size: 1rem; transition: transform .2s ease; }
+  .btn-buy:hover .arrow-icon { transform: translateX(3px); }
+
+  /* FOOTER */
+  .site-footer { border-top: 1px solid var(--border); padding: 3rem 2rem; text-align: center; }
+  .footer-logo { font-family: 'Bebas Neue', sans-serif; font-size: 2.5rem; letter-spacing: .1em; margin-bottom: .5rem; }
+  .footer-logo span { color: var(--orange); }
+  .footer-legal { font-size: .78rem; color: #444; max-width: 600px; margin: 0 auto 1rem; line-height: 1.7; }
+  .footer-copy { font-size: .72rem; color: #333; letter-spacing: .1em; }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+  @keyframes fadeIn { from{opacity:0} to{opacity:1} }
+  @keyframes scrollPulse { 0%,100%{transform:scaleY(1);opacity:.5} 50%{transform:scaleY(1.3);opacity:1} }
+
+  @media(max-width:700px){
+    .card.featured{grid-column:span 1}
+    .card.featured .card-img{aspect-ratio:1}
+  }
+</style>
+</head>
+<body>
+
+<section class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-tag">🏍️ Affiliate Gear Selection</div>
+  <h1>RIDE<br><span>HARD</span></h1>
+  <p class="hero-sub">Die besten Motorrad-Klamotten & Accessoires – handverlesen, direkt bei Amazon</p>
+  <div class="hero-scroll">
+    <span class="scroll-text">Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<div class="disclaimer-bar">
+  ⚠️ Affiliate-Hinweis: Diese Seite enthält Affiliate-Links (#ad #werbung). Als Amazon-Partner verdiene ich an qualifizierten Käufen. Für dich entstehen keine Mehrkosten.
+</div>
+
+<div class="section-header">
+  <h2>Top Picks</h2>
+  <span class="count" id="product-count">lädt...</span>
+  <div class="divider-line"></div>
+</div>
+
+<div id="grid-container">
+  <div class="loading">Produkte werden geladen <span>●</span></div>
+</div>
+
+<footer class="site-footer">
+  <div class="footer-logo">RIDE <span>HARD</span></div>
+  <p class="footer-legal">Diese Website enthält Affiliate-Links zu Amazon. Als Amazon-Partner verdiene ich an qualifizierten Käufen eine Provision. Für dich entstehen keine zusätzlichen Kosten. Alle Preise und Verfügbarkeiten können sich ändern.</p>
+  <p class="footer-copy">© 2025 RIDE HARD · Alle Rechte vorbehalten</p>
+</footer>
+
+<script>
+// ── KONFIGURATION ──────────────────────────────────────────
+const SHEET_ID = '1ysAHnPTe8QOL5f5wpaz1kT1nrGKPRYjb1_eLbAyyik8';
+const SHEET_GID = '0'; // Tab-ID (0 = erster Tab)
+// Spalten-Mapping (0-basiert, entspricht deinem Sheet)
+const COL = { name: 0, link: 1, img1: 2, img2: 3, img3: 4, desc: 5, status: 7 };
+// ──────────────────────────────────────────────────────────
+
+function parseCSV(text) {
+  const rows = [];
+  let row = [], field = '', inQuotes = false;
+  for (let i = 0; i < text.length; i++) {
+    const ch = text[i], next = text[i+1];
+    if (inQuotes) {
+      if (ch === '"' && next === '"') { field += '"'; i++; }
+      else if (ch === '"') { inQuotes = false; }
+      else { field += ch; }
+    } else {
+      if (ch === '"') { inQuotes = true; }
+      else if (ch === ',') { row.push(field); field = ''; }
+      else if (ch === '\n') { row.push(field); rows.push(row); row = []; field = ''; }
+      else if (ch === '\r') { /* skip */ }
+      else { field += ch; }
+    }
+  }
+  if (field || row.length) { row.push(field); rows.push(row); }
+  return rows;
+}
+
+function cleanName(name) {
+  return name.replace(/[\u{1F300}-\u{1FFFF}]/gu, '').replace(/[🏍️💨🍺💀⚡🌬️✨🏁🔥🥾🖤🎒🕶️🦅🇺🇸🧢⛽🥃]/g, '').trim();
+}
+
+function buildCard(p, index) {
+  const imgs = [p.img1, p.img2, p.img3].filter(Boolean);
+  if (!imgs.length) imgs.push('https://via.placeholder.com/400x400/161616/FF4D00?text=No+Image');
+  const featured = index < 2;
+  const name = cleanName(p.name);
+  const desc = p.desc.replace(/^["']|["']$/g, '').split('\n')[0].trim();
+
+  const card = document.createElement('div');
+  card.className = 'card' + (featured ? ' featured' : '');
+
+  card.innerHTML = `
+    <div class="card-img">
+      <img src="${imgs[0]}" alt="${name}" loading="lazy">
+    </div>
+    <div class="img-thumb-row">
+      ${imgs.map((img, idx) => `
+        <div class="img-thumb ${idx===0?'active':''}" data-idx="${idx}">
+          <img src="${img}" alt="" loading="lazy">
+        </div>`).join('')}
+    </div>
+    <div class="card-body">
+      <div class="card-name">${name}</div>
+      <div class="card-desc">${desc}</div>
+    </div>
+    <div class="card-foot">
+      <span class="hashtags">#ad #affiliate</span>
+      <a class="btn-buy" href="${p.link}" target="_blank" rel="noopener sponsored">
+        Bei Amazon <span class="arrow-icon">→</span>
+      </a>
+    </div>
+  `;
+
+  card.querySelectorAll('.img-thumb').forEach(thumb => {
+    thumb.addEventListener('click', () => {
+      const mainImg = card.querySelector('.card-img img');
+      const idx = parseInt(thumb.dataset.idx);
+      mainImg.style.opacity = '0';
+      setTimeout(() => { mainImg.src = imgs[idx]; mainImg.style.opacity = '1'; }, 150);
+      card.querySelectorAll('.img-thumb').forEach(t => t.classList.remove('active'));
+      thumb.classList.add('active');
+    });
+  });
+
+  return card;
+}
+
+async function loadProducts() {
+  const sheetUrl = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${SHEET_GID}`;
+  const url = `https://corsproxy.io/?url=${encodeURIComponent(sheetUrl)}`;
+  try {
+    const res = await fetch(url);
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const text = await res.text();
+    const rows = parseCSV(text);
+
+    // Erste Zeile = Header überspringen, nur "veröffentlicht" anzeigen, neueste zuerst
+    const products = rows.slice(1).reverse().filter(r =>
+      r[COL.name] && r[COL.name].trim() &&
+      r[COL.link] && r[COL.link].trim() &&
+      (r[COL.status] || '').toLowerCase().includes('veröffentlicht')
+    ).map(r => ({
+      name: r[COL.name] || '',
+      link: r[COL.link] || '',
+      img1: r[COL.img1] || '',
+      img2: r[COL.img2] || '',
+      img3: r[COL.img3] || '',
+      desc: r[COL.desc] || '',
+    }));
+
+    const container = document.getElementById('grid-container');
+    const countEl = document.getElementById('product-count');
+
+    if (!products.length) {
+      container.innerHTML = '<div class="loading">Keine Produkte gefunden.</div>';
+      return;
+    }
+
+    countEl.textContent = products.length + ' Produkte';
+
+    const grid = document.createElement('div');
+    grid.className = 'products-grid';
+    products.forEach((p, i) => grid.appendChild(buildCard(p, i)));
+    container.innerHTML = '';
+    container.appendChild(grid);
+
+    // Entrance animations
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const delay = (Array.from(grid.children).indexOf(entry.target) % 4) * 80;
+          setTimeout(() => entry.target.classList.add('visible'), delay);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+
+    grid.querySelectorAll('.card').forEach(c => observer.observe(c));
+
+  } catch (err) {
+    document.getElementById('grid-container').innerHTML =
+      `<div class="loading">Fehler beim Laden der Produkte.<br><small style="color:#555">${err.message}</small></div>`;
+    console.error(err);
+  }
+}
+
+loadProducts();
+</script>
+</body>
+</html>
